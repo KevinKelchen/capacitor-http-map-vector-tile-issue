@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'capacitor-http-url-spaces',
+  appName: 'capacitor-http-wasm-issue',
   webDir: 'www',
   bundledWebRuntime: false,
   plugins: {
