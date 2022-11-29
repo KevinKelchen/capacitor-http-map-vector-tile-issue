@@ -1,4 +1,4 @@
-# capacitor-http-url-spaces
+# capacitor-http-wasm-issue
 
 This repo is a reproduction sample app for what appears to be an issue in [Capacitor](https://github.com/ionic-team/capacitor).
 
@@ -7,7 +7,7 @@ The sample app uses the following libraries at these approximate versions
 - Angular - `15.0.0`
 - Ionic Angular - `6.3.8`
 
-The app uses the Ionic Angular "blank" starter app.
+The app uses the Ionic Angular "blank" starter app. It also uses the [esri ArcGIS API for JavaScript v3.x](https://developers.arcgis.com/javascript/3/) which loads a WASM file.
 
 ## Setup
 - Set up your dev environment for Capacitor development by following the official docs [here](https://capacitorjs.com/docs/getting-started/environment-setup).
@@ -58,17 +58,25 @@ To debug the WebView, follow the instructions [here](https://ionicframework.com/
 
 ## Steps to Reproduce
 
-- Get the app running by following [Running the App](#running-the-app) for iOS.
-- Once the app is running, open the Safari Web Inspector by following instructions in [Debugging the App](#debugging-the-app). Open the Console view.
-- There are two buttons in the app's UI: `Request With Encoded Space` and `Request Without Encoded Space`.
-  - Their click events will be handled in `/src/app/home/home.page.ts`.
-  - They will make network requests to the [Star Wars API](https://swapi.dev/) using the Angular `HttpClient` which will use the `CapacitorHttp` plugin at a lower-level.
-- Click the button that says `Request With Encoded Space`.
-  - In the console, you'll see the `CapacitorHttp` request and result objects, as well as a printed object of the response body. The request was successful.
-- Now click the button that says `Request Without Encoded Space`.
-  - In the console, you'll see the `CapacitorHttp` request and result objects. The result shows an error:
-    - ```json
-      {
-        message: "Invalid URL", errorMessage: "Invalid URL"
-      }
+- Get the app running by following [Running the App](#running-the-app) for iOS or Android.
+- Once the app is running, open the Safari Web Inspector/Chrome Dev Tools inspector by following instructions in [Debugging the App](#debugging-the-app). Open the Console view.
+- There is one button in the app's UI: `Load WASM`.
+  - The click event will be handled in `/src/app/home/home.page.ts`.
+  - The app will use `esri-loader` to load an AMD module and then use it. Using it will result in a network request to download and process a WASM file. The network requests will use the `CapacitorHttp` plugin at a lower-level.
+- Click the `Load WASM` button.
+  - In the console, you'll see the `CapacitorHttp` request and result objects for `https://js.arcgis.com/3.42/esri/geometry/support/pe-wasm.wasm`. There will also be the following:
+    - iOS
+      - Warning: `wasm streaming compile failed: CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes`
+      - Warning: `falling back to ArrayBuffer instantiation`
+      - Warning: `failed to asynchronously prepare wasm: CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes`
+      - Warning: `Aborted(CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes)`
+      - Error: `error: Uncaught (in promise): Error: CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes`
+      - Error: `Error: Uncaught (in promise): RuntimeError: Aborted(CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes). Build with -sASSERTIONS for more info.`
+    - Android
+      - Warning: `wasm streaming compile failed: CompileError: WebAssembly.instantiateStreaming(): unexpected end of stream @+3456147`
+      - Warning: `falling back to ArrayBuffer instantiation`
+      - Warning: `failed to asynchronously prepare wasm: CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13`
+      - Warning: `Aborted(CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13)`
+      - Error: `ERROR Error: Uncaught (in promise): Error: CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13 Error: CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13`
+      - Error: `ERROR Error: Uncaught (in promise): RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13). Build with -sASSERTIONS for more info. RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13). Build with -sASSERTIONS for more info.`
 
