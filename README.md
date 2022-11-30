@@ -7,7 +7,7 @@ The sample app uses the following libraries at these approximate versions
 - Angular - `15.0.0`
 - Ionic Angular - `6.3.8`
 
-The app uses the Ionic Angular "blank" starter app. It also uses the [esri ArcGIS API for JavaScript v3.x](https://developers.arcgis.com/javascript/3/) which loads a WASM file.
+The app uses the Ionic Angular "blank" starter app. It also uses the [esri ArcGIS API for JavaScript v3.x](https://developers.arcgis.com/javascript/3/) which loads a map with a vector tile layer.
 
 ## Setup
 - Set up your dev environment for Capacitor development by following the official docs [here](https://capacitorjs.com/docs/getting-started/environment-setup).
@@ -60,23 +60,11 @@ To debug the WebView, follow the instructions [here](https://ionicframework.com/
 
 - Get the app running by following [Running the App](#running-the-app) for iOS or Android.
 - Once the app is running, open the Safari Web Inspector/Chrome Dev Tools inspector by following instructions in [Debugging the App](#debugging-the-app). Open the Console view.
-- There is one button in the app's UI: `Load WASM`.
+- There is one button in the app's UI: `Load Map`.
   - The click event will be handled in `/src/app/home/home.page.ts`.
-  - The app will use `esri-loader` to load an AMD module and then use it. Using it will result in a network request to download and process a WASM file. The network requests will use the `CapacitorHttp` plugin at a lower-level.
-- Click the `Load WASM` button.
-  - In the console, you'll see the `CapacitorHttp` request and result objects for `https://js.arcgis.com/3.42/esri/geometry/support/pe-wasm.wasm`. There will also be the following:
-    - iOS
-      - Warning: `wasm streaming compile failed: CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes`
-      - Warning: `falling back to ArrayBuffer instantiation`
-      - Warning: `failed to asynchronously prepare wasm: CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes`
-      - Warning: `Aborted(CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes)`
-      - Error: `error: Uncaught (in promise): Error: CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes`
-      - Error: `Error: Uncaught (in promise): RuntimeError: Aborted(CompileError: WebAssembly.Module doesn't parse at byte 0: expected a module of at least 8 bytes). Build with -sASSERTIONS for more info.`
-    - Android
-      - Warning: `wasm streaming compile failed: CompileError: WebAssembly.instantiateStreaming(): unexpected end of stream @+3456147`
-      - Warning: `falling back to ArrayBuffer instantiation`
-      - Warning: `failed to asynchronously prepare wasm: CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13`
-      - Warning: `Aborted(CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13)`
-      - Error: `ERROR Error: Uncaught (in promise): Error: CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13 Error: CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13`
-      - Error: `ERROR Error: Uncaught (in promise): RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13). Build with -sASSERTIONS for more info. RuntimeError: Aborted(CompileError: WebAssembly.instantiate(): expected 9396207 bytes, fell off end @+13). Build with -sASSERTIONS for more info.`
+  - The app will use `esri-loader` to load AMD modules and then use them to create a map control with a vector tile layer. Using it will result in network requests to retrieve vector tile files including `.pbf` files. The network requests will use the `CapacitorHttp` plugin at a lower-level.
+- Click the `Load Map` button.
+  - In the console, you'll see the `CapacitorHttp` request and result objects. There will be no console errors.
+  - Visually, you'll see a `+`/`-` control appear, but that's it--the rest of the map will not be visible.
+  - In the success case, you'll additionally see that the map becomes visible and covers the entire content area including the "Ready to create an app?" and other elements within the content area.
 
