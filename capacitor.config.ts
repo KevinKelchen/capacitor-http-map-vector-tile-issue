@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'capacitor-http-wasm-issue',
+  appName: 'capacitor-http-map-vector-tile-issue',
   webDir: 'www',
   bundledWebRuntime: false,
   plugins: {
