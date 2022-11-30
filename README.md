@@ -66,5 +66,8 @@ To debug the WebView, follow the instructions [here](https://ionicframework.com/
 - Click the `Load Map` button.
   - In the console, you'll see the `CapacitorHttp` request and result objects. There will be no console errors.
   - Visually, you'll see a `+`/`-` control appear, but that's it--the rest of the map will not be visible.
+    - <img src="https://user-images.githubusercontent.com/8027502/204923415-62b1806a-a51a-4642-b880-3669510c9aac.png" width="200">
   - In the success case, you'll additionally see that the map becomes visible and covers the entire content area including the "Ready to create an app?" and other elements within the content area.
+    - <img src="https://user-images.githubusercontent.com/8027502/204923467-431f89a3-6f2a-4078-82d4-fc2069480774.png" width="200">
+
 
